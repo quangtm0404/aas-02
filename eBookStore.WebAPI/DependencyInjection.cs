@@ -8,7 +8,7 @@ namespace eBookStore.WebAPI
     {
         public static IServiceCollection AddWebAPIServices(this IServiceCollection services)
         {
-            services.AddControllers();
+            services.AddControllers()     ;
             services.AddHttpContextAccessor();
             services.AddRouting(opt => opt.LowercaseUrls = true);
             services.AddScoped<IClaimsService, ClaimsService>();

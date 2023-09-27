@@ -1,8 +1,9 @@
-using eBookStore.Domains.Entities;
-using System.Linq.Expressions;
 
-namespace eBookStore.Repositories.Repositories.Interfaces
-{
+using System.Linq.Expressions;
+using eBookStore.Domains.Entities;
+
+namespace eBookStore.Services.Repositories;
+
 	public interface IGenericRepository<TEntity> where TEntity : BaseEntity
 	{
 		Task<List<TEntity>> GetAllAsync(params Expression<Func<TEntity, object>>[] includes);
@@ -17,4 +18,3 @@ namespace eBookStore.Repositories.Repositories.Interfaces
 
 		Task<List<TEntity>> FindListByField(Expression<Func<TEntity, bool>> expression, params Expression<Func<TEntity, object>>[] includes);
 	}
-}

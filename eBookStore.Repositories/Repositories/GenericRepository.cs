@@ -1,6 +1,6 @@
 using eBookStore.Domains.Entities;
 using eBookStore.Repositories.Data;
-using eBookStore.Repositories.Repositories.Interfaces;
+using eBookStore.Services.Repositories;
 using eBookStore.Services.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
