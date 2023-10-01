@@ -8,6 +8,6 @@ namespace eBookStore.Services.Services.Interfaces
         Task<UserViewModel> LoginAsync(string email, string password);
         Task<UserViewModel> CreateAsync(UserCreateModel userCreateModel);
         Task<bool> DeleteAsync(Guid id); 
-        Task<bool> UpdateAsync(Guid id);
+        Task<UserViewModel> UpdateAsync(UserUpdateModel userUpdateModel);
     }
 }

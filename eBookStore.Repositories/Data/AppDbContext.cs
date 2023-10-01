@@ -46,7 +46,13 @@ public class AppDbContext : DbContext
 	{
 		modelBuilder.Entity<Role>().HasData(new Role
 		{
+			RoleName = "Admin",
+			Id = Guid.NewGuid(),
 
+		}, new Role
+		{
+			RoleName = "Customer",
+			Id = Guid.NewGuid()
 		});
 	}
 

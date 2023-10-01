@@ -1,8 +1,14 @@
+using eBookStore.Client.Services;
+using eBookStore.Client.Services.Interfaces;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
-
+builder.Services.AddScoped<IBaseService, BaseService>()
+    .AddScoped<ITokenProvider, TokenProvider>()
+    .AddHttpClient()
+    .AddHttpContextAccessor();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

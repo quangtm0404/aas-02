@@ -2,17 +2,21 @@ using System.Security.Cryptography.X509Certificates;
 using AutoMapper;
 using eBookStore.Domains.Entities;
 using eBookStore.Services.Services.Interfaces;
+using eBookStore.Services.Utilities;
 using eBookStore.Services.ViewModels.UserViewModels;
+using Microsoft.Extensions.Options;
 
 namespace eBookStore.Services.Services;
 public class UserService : IUserService
 {
     private readonly IMapper _mapper;
     private readonly IUnitOfWork _unitOfWork;
-    public UserService(IMapper mapper, IUnitOfWork unitOfWork)
+    private readonly JwtOption _jwtOptions;
+    public UserService(IMapper mapper, IUnitOfWork unitOfWork, IOptions<JwtOption> options)
     {
         _unitOfWork = unitOfWork;
         _mapper = mapper;
+        _jwtOptions = options.Value;
     }
 
     public async Task<UserViewModel> CreateAsync(UserCreateModel userCreateModel)
@@ -41,13 +45,23 @@ public class UserService : IUserService
     public async Task<IEnumerable<UserViewModel>> GetAllUsersAsync()
         => _mapper.Map<IEnumerable<UserViewModel>>(await _unitOfWork.UserRepository.GetAllAsync());
 
-    public Task<UserViewModel> LoginAsync(string email, string password)
-    {
-        throw new NotImplementedException();
-    }
+    public async Task<UserViewModel> LoginAsync(string email, string password)
+        => _mapper.Map<UserViewModel>(await _unitOfWork.UserRepository.FindByField(x => x.Email == email && x.Password == password));
 
-    public Task<bool> UpdateAsync(Guid id)
+    public async Task<UserViewModel> UpdateAsync(UserUpdateModel userUpdateModel)
     {
-        throw new NotImplementedException();
+        var userInDb = await _unitOfWork.UserRepository.GetByIdAsync(userUpdateModel.Id);
+        if (userInDb is not null)
+        {
+            _mapper.Map(userUpdateModel, userInDb);
+            _unitOfWork.UserRepository.Update(userInDb);
+            return await _unitOfWork.SaveChangesAsync() ? 
+                _mapper.Map<UserViewModel>(await _unitOfWork.UserRepository.GetByIdAsync(userInDb.Id))
+                : throw new Exception("Save changes failed!");
+        }
+        else
+        {
+            throw new Exception($"Not found User with Id {userUpdateModel.Id}");
+        }
     }
 }

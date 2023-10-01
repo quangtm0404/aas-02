@@ -24,7 +24,7 @@ public class RoleService : IRoleService
         } else throw new Exception("Save Changes Failed");
     }
 
-    public async Task<IEnumerable<RoleViewModel>> GetRole() 
+    public async Task<IEnumerable<RoleViewModel>> GetRoles() 
         => _mapper.Map<IEnumerable<RoleViewModel>>(await _unitOfWork.RoleRepository.GetAllAsync());
    
 
