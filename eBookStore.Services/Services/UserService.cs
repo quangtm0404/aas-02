@@ -22,6 +22,7 @@ public class UserService : IUserService
     public async Task<UserViewModel> CreateAsync(UserCreateModel userCreateModel)
     {
         var user = _mapper.Map<User>(userCreateModel);
+        user.RoleId = (await _unitOfWork.RoleRepository.FindByField(x => x.RoleName == "NormalUser")).Id;
         await _unitOfWork.UserRepository.AddAsync(user);
         return await _unitOfWork.SaveChangesAsync() ?
             _mapper.Map<UserViewModel>(await _unitOfWork.UserRepository.GetByIdAsync(user.Id))
@@ -43,10 +44,10 @@ public class UserService : IUserService
     }
 
     public async Task<IEnumerable<UserViewModel>> GetAllUsersAsync()
-        => _mapper.Map<IEnumerable<UserViewModel>>(await _unitOfWork.UserRepository.GetAllAsync());
+        => _mapper.Map<IEnumerable<UserViewModel>>(await _unitOfWork.UserRepository.GetAllAsync(x => x.Role));
 
     public async Task<UserViewModel> LoginAsync(string email, string password)
-        => _mapper.Map<UserViewModel>(await _unitOfWork.UserRepository.FindByField(x => x.Email == email && x.Password == password));
+        => _mapper.Map<UserViewModel>(await _unitOfWork.UserRepository.FindByField(x => x.Email == email && x.Password == password, x=> x.Role));
 
     public async Task<UserViewModel> UpdateAsync(UserUpdateModel userUpdateModel)
     {

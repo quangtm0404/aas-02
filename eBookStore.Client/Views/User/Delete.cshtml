@@ -1,0 +1,44 @@
+@using eBookStore.Services.ViewModels.UserViewModels;
+@model UserViewModel
+@{
+    ViewData["Title"] = "Delete";
+}
+
+<form method="post" asp-action="Delete" asp-controller="User">
+    <br />
+    <div class="container border p-3">
+        <h1 class="text-white text-center">Delete User</h1>
+        <hr />
+        <input type="hidden" asp-for="Id" value="@Model.Id"/>
+        <div class="row">
+             <div class="col-2">
+                <label class="control-label pt-2" style="font-size:20px;">Email</label>
+            </div>
+            <div class="col-10 pb-3">
+                <input class="form-control" value="@Model.Email" disabled="" />
+            </div>
+            <div class="col-2">
+                <label class="control-label pt-2" style="font-size:20px;">Name</label>
+            </div>
+            <div class="col-10 pb-3">
+                <input class="form-control" value="@Model.LastName + " " + @Model.MiddleName + " " + @Model.FirstName" disabled="" />
+            </div>
+             <div class="col-2">
+                <label class="control-label pt-2" style="font-size:20px;">Source</label>
+            </div>
+            <div class="col-10 pb-3">
+                <input class="form-control" value="@Model.Source" disabled="" />
+            </div>
+
+            <div class="col-5 offset-2">
+                <input type="submit" class="btn btn-danger form-control" value="Delete"/>
+                
+            </div>
+            <div class="col-5 offset-2">
+
+                <a class="btn-primary btn form-control" asp-controller="User" asp-action="Index">Back to List</a>
+            </div>
+
+        </div>
+    </div>
+</form>

@@ -1,0 +1,89 @@
+@using eBookStore.Services.ViewModels.PublisherModels;
+@model IEnumerable<PublisherViewModel> 
+
+@{
+    ViewData["Title"] = "Index";
+}
+<div class="card shadow border-0 mt-4">
+    <div class="card-header bg-secondary bg-gradient ml-0 py-3">
+        <div class="row">
+            <div class="col-12 text-center">
+                <h1 class="text-white">Publisher List</h1>
+            </div>
+
+        </div>
+    </div>
+    <div class="card-body p-4">
+        <div class="row pb-3">
+            <div class="col-6">
+                <a class="btn btn-primary" asp-controller="Publisher" asp-action="Create">Create New Publisher</a>
+            </div>
+            <div class="col-6">
+                <form method="post" asp-controller="Publisher" asp-action="Search">
+                    <input type="text" name="search" />
+                    <input type="submit" value="Search" />
+                </form>
+            </div>
+        </div>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        Id
+                    </th>
+                    <th>
+                        Name
+                    </th>
+                    <th>
+                        City
+                    </th>
+                    <th>
+                        State
+                    </th>
+                    <th>
+                        Country
+                    </th>
+                   
+                    <th>
+
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @item.Id
+                        </td>
+                        <td>
+                            @item.Name
+                        </td>
+                        <td>
+                            @item.City
+                        </td>
+                        <td>
+                            @item.State
+                        </td>
+
+                        <td>
+                            @item.Country
+                        </td>
+                       
+                        <td>
+                            <a class="btn btn-success" asp-controller="Publisher" asp-action="Details" asp-route-id="@item.Id">
+                                Details
+                            </a>
+
+                            <a class="btn btn-danger" asp-controller="Publisher" asp-action="Delete" asp-route-id="@item.Id">
+                                Delete
+                            </a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+    </div>
+
+</div>

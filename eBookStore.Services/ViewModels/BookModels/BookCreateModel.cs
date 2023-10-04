@@ -1,3 +1,5 @@
+using eBookStore.Services.ViewModels.BookAuthorModels;
+
 namespace eBookStore.Services.ViewModels.BookModels;
 public class BookCreateModel
 {
@@ -9,4 +11,5 @@ public class BookCreateModel
     public DateTime PublishedDate { get; set; } = default!;
     public string Notes { get; set; } = default!;
     public Guid PublisherId { get; set; } = default!;
+    public ICollection<BookAuthorCreateModel> BookAuthors {get; set;} = default!;
 }

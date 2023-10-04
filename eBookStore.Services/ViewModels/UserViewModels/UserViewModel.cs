@@ -13,5 +13,5 @@ public class UserViewModel
 	public Guid RoleId { get; set; } = default!;
 	public RoleViewModel Role { get; set; } = default!;
 	public Guid PublisherId { get; set; } = default!;
-	public DateTime HireDate { get; set; } = DateTime.Now;
+	public DateTime HireDate { get; set; } 
 }

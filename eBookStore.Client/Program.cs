@@ -1,5 +1,6 @@
 using eBookStore.Client.Services;
 using eBookStore.Client.Services.Interfaces;
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -8,7 +9,20 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddScoped<IBaseService, BaseService>()
     .AddScoped<ITokenProvider, TokenProvider>()
     .AddHttpClient()
-    .AddHttpContextAccessor();
+    .AddHttpContextAccessor()
+    .AddScoped<IAuthService, AuthService>();
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+    .AddCookie(opt =>
+    {
+        opt.ExpireTimeSpan = TimeSpan.FromHours(1);
+        opt.LoginPath = "/Auth/Login";
+        opt.AccessDeniedPath = "/Auth/AccessDenied";
+    });
+builder.Services.AddScoped<IUserService, UserService>()
+    .AddScoped<IPublisherService, PublisherService>()
+    .AddScoped<IRoleService, RoleService>()
+    .AddScoped<IAuthorService, AuthorService>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

@@ -1,0 +1,70 @@
+@using eBookStore.Services.ViewModels.UserViewModels;
+@model UserViewModel
+@{
+    ViewData["Title"] = "Details";
+}
+<form method="post" asp-action="Details" asp-controller="User">
+    <br />
+    <div class="container border p-3">
+        <h1 class="text-white text-center">Edit Users</h1>
+        <hr />
+        <input type="hidden" asp-for="Id" value="@Model.Id" />
+        <div class="row">
+            <div class="col-2">
+                <label class="control-label pt-2" style="font-size:20px;">Email</label>
+            </div>
+            <div class="col-10 pb-3">
+                <input class="form-control" asp-for="Email" value="@Model.Email" readonly/>
+            </div>
+
+            <div class="col-2">
+                <label class="control-label pt-2" style="font-size:20px;">First Name</label>
+            </div>
+            <div class="col-10 pb-3">
+                <input class="form-control" asp-for="FirstName" value="@Model.FirstName"/>
+            </div>
+            
+             <div class="col-2">
+                <label class="control-label pt-2" style="font-size:20px;">Middle Name</label>
+            </div>
+            <div class="col-10 pb-3">
+                <input class="form-control" asp-for="MiddleName" value="@Model.MiddleName"/>
+            </div>
+             <div class="col-2">
+                <label class="control-label pt-2" style="font-size:20px;">Last Name</label>
+            </div>
+            <div class="col-10 pb-3">
+                <input class="form-control" asp-for="LastName" value="@Model.LastName"/>
+            </div>
+
+             <div class="col-2">
+                <label class="control-label pt-2" style="font-size:20px;">Source</label>
+            </div>
+            <div class="col-10 pb-3">
+                <input class="form-control" asp-for="Source" value="@Model.Source"/>
+            </div>
+             <div class="col-2">
+                <label class="control-label pt-2" style="font-size:20px;">Hire Date</label>
+            </div>
+            <div class="col-10 pb-3">
+                <input class="form-control" value="@Model.HireDate"/>
+            </div>
+         
+            <input type="hidden" asp-for="Password" value="@Model.Password"/>
+            <input type="hidden" asp-for="PublisherId" value="@Model.PublisherId"/>
+            <input type="hidden" asp-for="RoleId" value="@Model.RoleId"/>
+
+
+
+
+            <div class="col-5 offset-2">
+                <input type="submit" class="btn btn-primary form-control" value="Update"/>
+            </div>
+            <br/>
+            <div class="col-5 offset-2">
+                <a class="btn-primary btn form-control" asp-controller="User" asp-action="Index">Back to List</a>
+            </div>
+            
+        </div>
+    </div>
+</form>

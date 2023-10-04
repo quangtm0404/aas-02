@@ -10,9 +10,9 @@
             "request": "launch",
             "preLaunchTask": "build",
             // If you have changed target frameworks, make sure to update the program path.
-            "program": "${workspaceFolder}/eBookStore.Client/bin/Debug/net7.0/eBookStore.Client.dll",
+            "program": "${workspaceFolder}/eBookStore.WebAPI/bin/Debug/net7.0/eBookStore.WebAPI.dll",
             "args": [],
-            "cwd": "${workspaceFolder}/eBookStore.Client",
+            "cwd": "${workspaceFolder}/eBookStore.WebAPI",
             "stopAtEntry": false,
             // Enable launching a web browser when ASP.NET Core starts. For more information: https://aka.ms/VSCode-CS-LaunchJson-WebBrowser
             "serverReadyAction": {

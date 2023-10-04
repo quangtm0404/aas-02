@@ -1,5 +1,4 @@
-
-using System.Net.Mime;
+using System.Text.Json;
 
 namespace eBookStore.WebAPI.Middlewares;
 public class GlobalExceptionMiddleware : IMiddleware
@@ -11,16 +10,22 @@ public class GlobalExceptionMiddleware : IMiddleware
     }
     public async Task InvokeAsync(HttpContext context, RequestDelegate next)
     {
-        try 
+        try
         {
             await next(context);
-        } catch(Exception ex) 
+        }
+        catch (Exception ex)
         {
-            context.Response.StatusCode = (int) StatusCodes.Status400BadRequest;
-            context.Response.ContentType = "text";
-            _logger.LogError($"--> Error: {ex.Message}");
-            await context.Response.WriteAsync($"--> Error: {ex.Message}");
-            
+            context.Response.ContentType = "application/json";
+            context.Response.StatusCode = 400;
+            _logger.LogError(ex.Message);
+            var result = JsonSerializer.Serialize(new ResponseModel
+            {
+                IsSuccess = false,
+                Message = ex.Message
+            });
+            await context.Response.WriteAsync(result);
+
 
         }
     }

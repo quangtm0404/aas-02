@@ -1,6 +1,9 @@
 using AutoMapper;
 using eBookStore.Domains.Entities;
 using eBookStore.Services.ViewModels.AuthorViewModels;
+using eBookStore.Services.ViewModels.BookAuthorModels;
+using eBookStore.Services.ViewModels.BookModels;
+using eBookStore.Services.ViewModels.PublisherModels;
 using eBookStore.Services.ViewModels.RoleViewModels;
 using eBookStore.Services.ViewModels.UserViewModels;
 
@@ -21,7 +24,16 @@ public class Profiles : Profile
         CreateMap<AuthorViewModel, Author>().ReverseMap();
         CreateMap<AuthorCreateModel, Author>().ReverseMap();
         CreateMap<AuthorUpdateModel, Author>().ReverseMap();
+        CreateMap<PublisherViewModel, Publisher>().ReverseMap();
+        CreateMap<PublisherUpdateModel, Publisher>().ReverseMap();
+        CreateMap<PublisherCreateModel, Publisher>().ReverseMap();
 
-        
+        CreateMap<BookViewModel, Book>().ReverseMap();
+        CreateMap<BookCreateModel, Book>().ReverseMap();
+        CreateMap<BookUpdateModel, Book>().ReverseMap();;
+        CreateMap<BookAuthorViewModel, BookAuthor>().ReverseMap();
+        CreateMap<BookAuthorUpdateModel, BookAuthor>().ReverseMap();
+        CreateMap<BookAuthorCreateModel, BookAuthor>().ReverseMap();
+
     }
 }

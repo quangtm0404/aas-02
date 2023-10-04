@@ -1,0 +1,105 @@
+@using eBookStore.Services.ViewModels.AuthorViewModels;
+@model IEnumerable<AuthorViewModel>
+@{
+    ViewData["Title"] = "Index";
+}
+
+<div class="card shadow border-0 mt-4">
+    <div class="card-header bg-secondary bg-gradient ml-0 py-3">
+        <div class="row">
+            <div class="col-12 text-center">
+                <h1 class="text-white">Author List</h1>
+            </div>
+
+        </div>
+    </div>
+    <div class="card-body p-4">
+        <div class="row pb-3">
+            <div class="col-6">
+                <a class="btn btn-primary" asp-controller="Author" asp-action="Create">Create New Author</a>
+            </div>
+            <div class="col-6">
+                <form method="post" asp-controller="Author" asp-action="Search">
+                    <input type="text" name="search" />
+                    <input type="submit" value="Search" />
+                </form>
+            </div>
+        </div>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        Id
+                    </th>
+                    <th>
+                        Name
+                    </th>
+                    <th>
+                        Phone Number
+                    </th>
+                    <th>
+                        Address
+                    </th>
+                    <th>
+                        City
+                    </th>
+                    <th>
+                        State
+                    </th>
+                    <th>
+                        Zip
+                    </th>
+                    <th>
+                        Email
+                    </th>
+                    <th>
+
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @item.Id
+                        </td>
+                        <td>
+                            @item.FirstName @item.LastName
+                        </td>
+                        <td>
+                            @item.PhoneNumber
+                        </td>
+                        <td>
+                            @item.Address
+                        </td>
+
+                        <td>
+                            @item.City
+                        </td>
+                        <td>
+                            @item.State
+                        </td>
+                        <td>
+                            @item.Zip
+                        </td>
+                        <td>
+                            @item.Email
+                        </td>
+                        <td>
+                            <a class="btn btn-success" asp-controller="Author" asp-action="Details" asp-route-id="@item.Id">
+                                Details
+                            </a>
+
+                            <a class="btn btn-danger" asp-controller="Author" asp-action="Delete" asp-route-id="@item.Id">
+                                Delete
+                            </a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+    </div>
+
+</div>

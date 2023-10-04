@@ -1,8 +1,8 @@
-using System.Net;
-using System.Text.Json;
 using eBookStore.Client.Models;
 using eBookStore.Client.Services.Interfaces;
-using Microsoft.AspNetCore.Identity;
+using Newtonsoft.Json;
+using System.Net;
+using System.Text;
 using static eBookStore.Client.StaticDetails;
 
 namespace eBookStore.Client.Services;
@@ -15,9 +15,9 @@ public class BaseService : IBaseService
         _httpClientFactory = httpClientFactory;
         _tokenProvider = tokenProvider;
     }
-    public async Task<object?> SendAsync(RequestModel request, bool withToken = false)
+    public async Task<string?> SendAsync(RequestModel request, bool withToken = false)
     {
-        HttpClient client = _httpClientFactory.CreateClient("MangoAPI");
+        HttpClient client = _httpClientFactory.CreateClient("eBookStore");
         HttpRequestMessage message = new();
         message.Headers.Add("Accept", "application/json");
 
@@ -30,7 +30,7 @@ public class BaseService : IBaseService
         message.RequestUri = new Uri(request.URL);
         if (request.Data != null)
         {
-            message.Content = new StringContent(JsonSerializer.Serialize(request.Data));
+            message.Content = new StringContent(JsonConvert.SerializeObject(request.Data), encoding: Encoding.UTF8, "application/json");
         }
 
         HttpResponseMessage? apiResponse = null;
@@ -58,21 +58,25 @@ public class BaseService : IBaseService
         switch (apiResponse.StatusCode)
         {
             case HttpStatusCode.NotFound:
-                return null;
+                return string.Empty;
             case HttpStatusCode.Forbidden:
-                return null;
+                return string.Empty;
             case HttpStatusCode.Unauthorized:
-                return null;
+                return string.Empty;
             case HttpStatusCode.InternalServerError:
-                return null;
+                return string.Empty;
             case HttpStatusCode.BadRequest:
-                return null;
+                return string.Empty;
+            case HttpStatusCode.UnsupportedMediaType:
+                return string.Empty;
+            case HttpStatusCode.NoContent:
+                return "NoContent";
             default:
                 var apiContent = await apiResponse.Content.ReadAsStringAsync();
-                var apiResponseModel = JsonSerializer.Deserialize<object?>(apiContent);
-                return apiResponseModel;
+
+                return apiContent;
         }
-    } 
+    }
 
 }
 

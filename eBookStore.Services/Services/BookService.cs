@@ -21,16 +21,20 @@ public class BookService : IBookService
         {
             await _unitOfWork.BookRepository.AddAsync(book);
             await _unitOfWork.SaveChangesAsync();
-            return _mapper.Map<BookViewModel>(await _unitOfWork.BookRepository.GetByIdAsync(book.Id));
+            return _mapper.Map<BookViewModel>(await _unitOfWork.BookRepository.GetByIdAsync(book.Id, x => x.BookAuthors));
         }
         else throw new AutoMapperMappingException("Unsupported Mapping");
     }
 
     public async Task<bool> DeleteAsync(Guid id)
     {
-        var book = await _unitOfWork.BookRepository.GetByIdAsync(id);
+        var book = await _unitOfWork.BookRepository.GetByIdAsync(id, x => x.BookAuthors);
         if (book != null)
         {
+            if(book.BookAuthors.Count() > 0)
+            {
+                _unitOfWork.BookAuthorRepository.SoftRemoveRange(book.BookAuthors);
+            }
             _unitOfWork.BookRepository.SoftRemove(book);
             return await _unitOfWork.SaveChangesAsync();
         }
@@ -38,7 +42,7 @@ public class BookService : IBookService
     }
 
     public async Task<IEnumerable<BookViewModel>> GetAllAsync()
-    => _mapper.Map<IEnumerable<BookViewModel>>(await _unitOfWork.BookRepository.GetAllAsync());
+    => _mapper.Map<IEnumerable<BookViewModel>>(await _unitOfWork.BookRepository.GetAllAsync(x => x.BookAuthors));
 
     public async Task<BookViewModel> GetByIdAsync(Guid id) => _mapper.Map<BookViewModel>(await _unitOfWork.BookRepository.GetByIdAsync(id));
 
@@ -50,7 +54,7 @@ public class BookService : IBookService
             _mapper.Map(model, book);
             _unitOfWork.BookRepository.Update(book);
             await _unitOfWork.SaveChangesAsync();
-            return _mapper.Map<BookViewModel>(await _unitOfWork.BookRepository.GetByIdAsync(book.Id));
+            return _mapper.Map<BookViewModel>(await _unitOfWork.BookRepository.GetByIdAsync(book.Id, x => x.BookAuthors));
         }
         else throw new Exception($"Not found Book with Id: {model.Id}");
     }

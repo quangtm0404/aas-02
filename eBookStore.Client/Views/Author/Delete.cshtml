@@ -1,0 +1,80 @@
+@using eBookStore.Services.ViewModels.AuthorViewModels;
+@model AuthorViewModel
+@{
+    ViewData["Title"] = "Delete";
+}
+<form method="post" asp-controller="Author" asp-action="Delete">
+    <br />
+    <div class="container border p-3">
+        <h1 class="text-white text-center">Delete Author</h1>
+        <hr />
+        <div class="row">
+             <div class="col-2">
+                <label class="control-label pt-2" style="font-size:20px;">Email</label>
+            </div>
+            <div class="col-10 pb-3">
+                <input class="form-control" asp-for="Id" type="hidden" value="@Model.Id"/>
+                <input class="form-control" asp-for="Email" type="email" value="@Model.Email" readonly/>
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+
+            <div class="col-2">
+                <label class="control-label pt-2" style="font-size:20px;">FirstName</label>
+            </div>
+            <div class="col-10 pb-3">
+                <input class="form-control" asp-for="FirstName"  value="@Model.FirstName" readonly/>
+                <span asp-validation-for="FirstName" class="text-danger"></span>
+            </div>
+            <div class="col-2">
+                <label class="control-label pt-2" style="font-size:20px;">LastName</label>
+            </div>
+            <div class="col-10 pb-3">
+                <input class="form-control" asp-for="LastName" value="@Model.LastName" readonly/>
+                <span asp-validation-for="LastName" class="text-danger"></span>
+            </div>
+             <div class="col-2">
+                <label class="control-label pt-2" style="font-size:20px;">Phone Number</label>
+            </div>
+            <div class="col-10 pb-3">
+                <input class="form-control" asp-for="PhoneNumber" value="@Model.PhoneNumber" readonly/>
+                <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+            </div>
+             <div class="col-2">
+                <label class="control-label pt-2" style="font-size:20px;">Address</label>
+            </div>
+            <div class="col-10 pb-3">
+                <input class="form-control" asp-for="Address" value="@Model.Address" readonly/>
+                <span asp-validation-for="Address" class="text-danger"></span>
+            </div>
+
+             <div class="col-2">
+                <label class="control-label pt-2" style="font-size:20px;">City</label>
+            </div>
+            <div class="col-10 pb-3">
+                <input class="form-control" asp-for="City" value="@Model.City" readonly/>
+                <span asp-validation-for="City" class="text-danger"></span>
+            </div>
+             <div class="col-2">
+                <label class="control-label pt-2" style="font-size:20px;">State</label>
+            </div>
+            <div class="col-10 pb-3">
+                <input class="form-control" asp-for="State" value="@Model.City" readonly/>
+                <span asp-validation-for="State" class="text-danger"></span>
+            </div>
+             <div class="col-2">
+                <label class="control-label pt-2" style="font-size:20px;">Zip</label>
+                
+            </div>
+            <div class="col-10 pb-3">
+                <input class="form-control" asp-for="Zip" value="@Model.Zip" readonly/>
+                <span asp-validation-for="Zip" class="text-danger"></span>
+            </div>
+            <div class="col-5 offset-2">
+                <a class="btn-primary btn form-control" asp-controller="Author" asp-action="Index">Back to List</a>
+            </div>
+            <div class="col-5">
+                <input type="submit" value="Delete" class="btn btn-success form-control" />
+            </div>
+        </div>
+    </div>
+</form>

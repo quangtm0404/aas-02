@@ -1,0 +1,63 @@
+@using eBookStore.Services.ViewModels.UserViewModels;
+@model UserUpdateModel
+@{
+    ViewData["Title"] = "Profile";
+}
+
+<form method="post" asp-action="Profile" asp-controller="Profile">
+    <br />
+    <div class="container border p-3">
+
+        <hr />
+        
+        <div class="row">
+            <div class="col-2">
+                <label class="control-label pt-2" style="font-size:20px;">Email</label>
+            </div>
+            <div class="col-10 pb-3">
+                <input class="form-control" readonly="true" value="@Model.Email" asp-for="Email"/>
+            </div>
+
+            <div class="col-2">
+                <label class="control-label pt-2" style="font-size:20px;">Source</label>
+            </div>
+            <div class="col-10 pb-3">
+                <input class="form-control" asp-for="Source" value="@Model.Source"/>
+            </div>
+            <div class="col-2">
+                <label class="control-label pt-2" style="font-size:20px;">First Name</label>
+            </div>
+            <div class="col-10 pb-3">
+                <input class="form-control" asp-for="FirstName" value="@Model.FirstName"/>
+            </div>
+            <div class="col-2">
+                <label class="control-label pt-2" style="font-size:20px;">Middle Name</label>
+            </div>
+            <div class="col-10 pb-3">
+                <input class="form-control" asp-for="MiddleName" value="@Model.MiddleName" />
+            </div>
+            <div class="col-2">
+                <label class="control-label pt-2" style="font-size:20px;">Last Name</label>
+            </div>
+            <div class="col-10 pb-3">
+                <input class="form-control" asp-for="LastName" value="@Model.LastName" />
+            </div>
+          
+           <input type="hidden" asp-for="Id" value="@Model.Id" />
+            <input type="hidden" value="@Model.Password" asp-for="Password" />
+            <input type="hidden" value="@Model.PublisherId" asp-for="PublisherId"/>
+            <input type="hidden" value="@Model.RoleId" asp-for="RoleId"/>
+
+            <div class="col-5 offset-2" style="padding-bottom:20px;">
+
+                <input type="submit" class="btn btn-primary form-control" value="Update"/> 
+                <br/>
+            </div>
+            <div class="col-5 offset-2">
+
+                <a class="btn-primary btn form-control" asp-controller="Home" asp-action="Index">Back</a>
+            </div>
+
+        </div>
+    </div>
+</form>

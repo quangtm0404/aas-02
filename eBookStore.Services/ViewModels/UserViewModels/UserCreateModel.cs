@@ -7,7 +7,6 @@ public class UserCreateModel
     public string FirstName { get; set; } = default!;
     public string MiddleName { get; set; } = default!;
     public string LastName { get; set; } = default!;
-    public Guid RoleId { get; set; }
     public Guid PublisherId { get; set; }
-    public DateTime HireDate { get; set; } = DateTime.UtcNow;
+    public Guid RoleId { get; set; }
 }

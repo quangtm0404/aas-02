@@ -7,7 +7,8 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/eBookStore.Client.styles.css" asp-append-version="true" />
-</head>
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.css" />
+</head> 
 <body>
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
@@ -22,7 +23,35 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
-                        @if(User is not null)
+                        <li class="nav-item dropdown">
+                        @if(User.IsInRole("Admin"))
+                        {
+                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Content Management
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" asp-controller="User" asp-action="Index">Users</a></li>
+
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item" asp-controller="Book" asp-action="Index">Books</a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item" asp-controller="Author" asp-action="Index">Authors</a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item" asp-controller="Publisher" asp-action="Index">Publishers</a></li>
+                            </ul>
+                        } else if(User.IsInRole("NormalUser"))
+                        {
+                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Content Management
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" asp-controller="Profile" asp-action="Profile" asp-route-id="@User!.Identities.First().Claims.FirstOrDefault(x => x.Type == "sub")!.Value">Profile</a></li>
+                            </ul>
+                        }
+                        
+                    </li>
+
+                        @if (!User.Identity!.IsAuthenticated)
                         {
                             <li class="nav-item">
                                 <a class="nav-link" asp-controller="Auth" asp-action="Login">Login</a>
@@ -32,7 +61,7 @@
                                 <a class="nav-link" href="#">Hello @User!.Identities.First().Claims.FirstOrDefault(x => x.Type == "name")!.Value</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link">Logout</a>
+                                <a class="nav-link" asp-controller="Auth" asp-action="Logout">Logout</a>
                             </li>
                         }
                         
@@ -44,6 +73,7 @@
     <div class="container">
         <main role="main" class="pb-3">
             @RenderBody()
+            <partial name="_NotificationPartial"></partial>
         </main>
     </div>
 
