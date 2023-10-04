@@ -1,11 +1,13 @@
 using eBookStore.Services.Services.Interfaces;
 using eBookStore.Services.ViewModels.BookModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Query;
 using Microsoft.AspNetCore.OData.Routing.Controllers;
 
 namespace eBookStore.WebAPI.Controllers;
 [ApiController]
+[Authorize(Roles = "Admin")]
 [Route("api/[controller]")]
 public class BooksController : ODataController
 {
@@ -35,7 +37,7 @@ public class BooksController : ODataController
     public async Task<IActionResult> Put([FromBody] BookUpdateModel model)
     {
         var result = await _bookService.UpdateAsync(model);
-        return StatusCode(StatusCodes.Status204NoContent, result);
+        return NoContent();
     }
 
     [HttpPost]

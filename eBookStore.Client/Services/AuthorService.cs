@@ -15,12 +15,13 @@ namespace eBookStore.Client.Services
 
         public async Task<AuthorViewModel?> CreateAsync(AuthorCreateModel model)
         {
-            var result = await _baseService.SendAsync(new Models.RequestModel {
+            var result = await _baseService.SendAsync(new Models.RequestModel
+            {
                 APIType = StaticDetails.APIType.POST,
                 URL = $"{StaticDetails.SERVICE_BASE_URL}/authors",
                 Data = model
             });
-            if(string.IsNullOrEmpty(result)) return null;
+            if (string.IsNullOrEmpty(result)) return null;
             else return JsonConvert.DeserializeObject<AuthorViewModel>(result);
         }
 
@@ -36,13 +37,25 @@ namespace eBookStore.Client.Services
             else return false;
         }
 
-        public async Task<IEnumerable<AuthorViewModel>?> GetAllAsync()
+        public async Task<IEnumerable<AuthorViewModel>?> GetAllAsync(string search = "")
         {
-            var result = await _baseService.SendAsync(new Models.RequestModel
+            string? result = "";
+            if (string.IsNullOrEmpty(search))
+            {
+                result = await _baseService.SendAsync(new Models.RequestModel
+                {
+                    APIType = StaticDetails.APIType.GET,
+                    URL = $"{StaticDetails.SERVICE_BASE_URL}/authors"
+                });
+            } else 
+            {
+                result = await _baseService.SendAsync(new Models.RequestModel
             {
                 APIType = StaticDetails.APIType.GET,
-                URL = $"{StaticDetails.SERVICE_BASE_URL}/authors"
+                URL = $"{StaticDetails.SERVICE_BASE_URL}/authors?$filter=contains(firstName, '{search}') or contains(lastName, '{search}')"
             });
+            }
+
             if (!string.IsNullOrEmpty(result))
             {
                 return JsonConvert.DeserializeObject<IEnumerable<AuthorViewModel>>(result);

@@ -15,7 +15,7 @@ public class BaseService : IBaseService
         _httpClientFactory = httpClientFactory;
         _tokenProvider = tokenProvider;
     }
-    public async Task<string?> SendAsync(RequestModel request, bool withToken = false)
+    public async Task<string?> SendAsync(RequestModel request, bool withToken = true)
     {
         HttpClient client = _httpClientFactory.CreateClient("eBookStore");
         HttpRequestMessage message = new();

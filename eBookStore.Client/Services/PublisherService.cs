@@ -35,21 +35,33 @@ namespace eBookStore.Client.Services
             return false;
         }
 
-        public async Task<IEnumerable<PublisherViewModel>?> GetAllAsync()
+        public async Task<IEnumerable<PublisherViewModel>?> GetAllAsync(string search = "")
         {
-            var stringResult = await _baseService.SendAsync(new Models.RequestModel
+            string? stringResult = "";
+            if (string.IsNullOrEmpty(search))
             {
-                APIType = StaticDetails.APIType.GET,
-                URL = $"{StaticDetails.SERVICE_BASE_URL}/publishers"
-            });
+                stringResult = await _baseService.SendAsync(new Models.RequestModel
+                {
+                    APIType = StaticDetails.APIType.GET,
+                    URL = $"{StaticDetails.SERVICE_BASE_URL}/publishers"
+                });
+            } else 
+            {
+                stringResult = await _baseService.SendAsync(new Models.RequestModel
+                {
+                    APIType = StaticDetails.APIType.GET,
+                    URL = $"{StaticDetails.SERVICE_BASE_URL}/publishers?$filter=contains(name, '{search}')"
+                });
+            }
+
             return JsonConvert.DeserializeObject<IEnumerable<PublisherViewModel>>(stringResult!);
         }
 
         public async Task<PublisherViewModel?> GetByIdAsync(Guid id)
         {
-            var result = await _baseService.SendAsync(new Models.RequestModel 
+            var result = await _baseService.SendAsync(new Models.RequestModel
             { APIType = StaticDetails.APIType.GET, URL = $"{StaticDetails.SERVICE_BASE_URL}/publishers/{id}" });
-            if(!string.IsNullOrEmpty(result))  
+            if (!string.IsNullOrEmpty(result))
                 return JsonConvert.DeserializeObject<PublisherViewModel>(result);
             return null;
         }

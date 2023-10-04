@@ -38,13 +38,26 @@ public class UserService : IUserService
 
     }
 
-    public async Task<IEnumerable<UserViewModel>?> GetAllUserAsync()
+    public async Task<IEnumerable<UserViewModel>?> GetAllUserAsync(string search = "")
     {
-        var result = await _baseService.SendAsync(new RequestModel
+        string? result = "";
+        if (!string.IsNullOrEmpty(search))
         {
-            APIType = StaticDetails.APIType.GET,
-            URL = $"{StaticDetails.SERVICE_BASE_URL}/users"
-        });
+            result = await _baseService.SendAsync(new RequestModel
+            {
+                APIType = StaticDetails.APIType.GET,
+                URL = $"{StaticDetails.SERVICE_BASE_URL}/users?$filter=contains(firstName, '{search}') or contains(lastName, '{search}')"
+            });
+        }
+        else
+        {
+            result = await _baseService.SendAsync(new RequestModel
+            {
+                APIType = StaticDetails.APIType.GET,
+                URL = $"{StaticDetails.SERVICE_BASE_URL}/users"
+            });
+        }
+
         if (!string.IsNullOrEmpty(result))
         {
             System.Console.WriteLine("Result : " + result);

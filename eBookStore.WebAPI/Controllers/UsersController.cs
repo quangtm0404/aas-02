@@ -1,5 +1,6 @@
 using eBookStore.Services.Services.Interfaces;
 using eBookStore.Services.ViewModels.UserViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Query;
 using Microsoft.AspNetCore.OData.Routing.Controllers;
@@ -14,6 +15,7 @@ public class UsersController : ODataController
     {
         _userService = userService;
     }
+    [Authorize(Roles = "ADMIN")]
     [HttpDelete("{id}")]
     public async Task<IActionResult> Delete(Guid id)
     {
@@ -21,6 +23,7 @@ public class UsersController : ODataController
             return NoContent();
         else return BadRequest();
     }
+    [Authorize(Roles = "ADMIN")]
     [HttpPost]
     public async Task<IActionResult> Create([FromBody] UserCreateModel model)
     {
@@ -29,6 +32,7 @@ public class UsersController : ODataController
             return CreatedAtAction(nameof(GetById), new { id = result.Id }, result);
         else return BadRequest($"Create Failed!");
     }
+    [Authorize(Roles = "ADMIN")]
     [HttpGet("{id}")]
     public async Task<IActionResult> GetById(Guid id)
     {
@@ -36,13 +40,14 @@ public class UsersController : ODataController
         if (result is not null) return Ok(result);
         else return NotFound($"Not found user with Id: {id}");
     }
-
+    [Authorize(Roles = "Admin")]
     [EnableQuery]
     [HttpGet]
     public async Task<IActionResult> GetAll()
     {
         return Ok((await _userService.GetAllUsersAsync()).AsQueryable());
     }
+    [Authorize]
     [EnableQuery]
     [HttpPut]
     public async Task<IActionResult> Put([FromBody] UserUpdateModel model)

@@ -31,9 +31,12 @@ public class BookService : IBookService
         var book = await _unitOfWork.BookRepository.GetByIdAsync(id, x => x.BookAuthors);
         if (book != null)
         {
-            if(book.BookAuthors.Count() > 0)
+            if (book.BookAuthors.Count() > 0)
             {
-                _unitOfWork.BookAuthorRepository.SoftRemoveRange(book.BookAuthors);
+                foreach (var item in book.BookAuthors)
+                {
+                    _unitOfWork.BookAuthorRepository.SoftRemove(item);
+                }
             }
             _unitOfWork.BookRepository.SoftRemove(book);
             return await _unitOfWork.SaveChangesAsync();
@@ -44,11 +47,11 @@ public class BookService : IBookService
     public async Task<IEnumerable<BookViewModel>> GetAllAsync()
     => _mapper.Map<IEnumerable<BookViewModel>>(await _unitOfWork.BookRepository.GetAllAsync(x => x.BookAuthors));
 
-    public async Task<BookViewModel> GetByIdAsync(Guid id) => _mapper.Map<BookViewModel>(await _unitOfWork.BookRepository.GetByIdAsync(id));
+    public async Task<BookViewModel> GetByIdAsync(Guid id) => _mapper.Map<BookViewModel>(await _unitOfWork.BookRepository.GetByIdAsync(id, x => x.BookAuthors));
 
     public async Task<BookViewModel> UpdateAsync(BookUpdateModel model)
     {
-        var book = await _unitOfWork.BookRepository.GetByIdAsync(model.Id);
+        var book = await _unitOfWork.BookRepository.GetByIdAsync(model.Id, x => x.BookAuthors);
         if (book != null)
         {
             _mapper.Map(model, book);

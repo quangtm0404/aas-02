@@ -10,9 +10,12 @@ namespace eBookStore.Client.Controllers;
 public class AuthController : Controller
 {
     private readonly IAuthService _authService;
-    public AuthController(IAuthService authService)
+    private readonly ITokenProvider tokenProvider;
+
+    public AuthController(IAuthService authService, ITokenProvider tokenProvider)
     {
         _authService = authService;
+        this.tokenProvider = tokenProvider;
     }
     [HttpGet]
     public IActionResult Login()
@@ -23,6 +26,8 @@ public class AuthController : Controller
     public IActionResult Logout()
     {
         HttpContext.SignOutAsync();
+
+        tokenProvider.ClearToken();
         TempData["success"] = "Logout Successfully!";
         return RedirectToAction("Index", "Home");
     }
@@ -34,6 +39,7 @@ public class AuthController : Controller
         {
             LoginResponseModel loginResponse = (LoginResponseModel)result;
             await SignInUser(loginResponse);
+            tokenProvider.SetToken(loginResponse!.Token);
             return RedirectToAction("Index", "Home");
         }
         else
@@ -56,6 +62,7 @@ public class AuthController : Controller
         identity.AddClaim(new Claim(ClaimTypes.Role, jwt.Claims.FirstOrDefault(x => x.Type == "role")!.Value));
         System.Console.WriteLine("--> Role: " + identity.Claims.First(x => x.Type == ClaimTypes.Role));
         var principal = new ClaimsPrincipal(identity);
+
         await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
     }
 }

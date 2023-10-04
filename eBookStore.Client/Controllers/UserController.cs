@@ -30,6 +30,18 @@ public class UserController : Controller
         TempData["error"] = "Not have any users";
         return View(new List<UserViewModel>());
     }
+    [HttpPost]
+        public async Task<IActionResult> Search(string search)
+        {
+            var result = await _userService.GetAllUserAsync(search);
+            if (result is not null)
+                return View(nameof(Index), result);
+            else
+            {
+                TempData["error"] = $"Not found any User with that keyword!";
+                return RedirectToAction(nameof(Index));
+            }
+        }
     [HttpGet]
     public async Task<IActionResult> Create()
     {

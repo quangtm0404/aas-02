@@ -1,5 +1,6 @@
 using eBookStore.Client.Services;
 using eBookStore.Client.Services.Interfaces;
+
 using Microsoft.AspNetCore.Authentication.Cookies;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -21,7 +22,9 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
 builder.Services.AddScoped<IUserService, UserService>()
     .AddScoped<IPublisherService, PublisherService>()
     .AddScoped<IRoleService, RoleService>()
-    .AddScoped<IAuthorService, AuthorService>();
+    .AddScoped<IAuthorService, AuthorService>()
+    .AddScoped<IBookService, BookService>();
+builder.Services.AddMemoryCache();
 
 var app = builder.Build();
 

@@ -16,6 +16,15 @@ public class BookAuthorService : IBookAuthorService
     public async Task<BookAuthorViewModel> CreateBookAuthorAsync(BookAuthorCreateModel model)
     {
         var bookAuthor = _mapper.Map<BookAuthor>(model);
+        
+        var bookAuthorList = await _unitOfWork.BookAuthorRepository.FindListByField(x => x.BookId == model.BookId);
+        if(bookAuthorList.Count > 0) 
+        {
+            var flag = bookAuthorList.FirstOrDefault(x => x.AuthorId == model.AuthorId);
+            if(flag is not null) throw new Exception("Author Exsited!");
+              
+        }
+        bookAuthor.AuthorOrder = bookAuthorList.Count + 1;
         await _unitOfWork.BookAuthorRepository.AddAsync(bookAuthor);
         if(await _unitOfWork.SaveChangesAsync())
         {

@@ -1,5 +1,6 @@
 using eBookStore.Services.Services.Interfaces;
 using eBookStore.Services.ViewModels.AuthorViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Query;
 using Microsoft.AspNetCore.OData.Routing.Controllers;
@@ -8,6 +9,7 @@ namespace eBookStore.WebAPI.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
+[Authorize(Roles = "Admin")]
 public class AuthorsController : ODataController
 {
     private readonly IAuthorService _authorService;
@@ -15,6 +17,7 @@ public class AuthorsController : ODataController
     {
         _authorService = authorService;
     }
+
 
     [HttpGet]
     [EnableQuery]

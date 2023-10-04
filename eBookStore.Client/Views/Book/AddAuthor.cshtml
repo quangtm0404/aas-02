@@ -1,0 +1,29 @@
+@using eBookStore.Services.ViewModels.BookAuthorModels;
+@model BookAuthorCreateModel
+@{
+    ViewData["Title"] = "AddAuthor";
+}
+
+<form method="POST" asp-action="AddAuthor">
+    <div class="col-2">
+        <label class="control-label pt-2" style="font-size:20px;">Author</label>
+    </div>
+    <div class="col-10 pb-3">
+        <select asp-for="AuthorId" class="form-control" asp-items="ViewBag.AuthorId"></select>
+    </div>
+    <div class="col-2">
+        <label class="control-label pt-2" style="font-size:20px;">Royalty Percentage</label>
+    </div>
+    <div class="col-10 pb-3">
+        <input class="form-control" asp-for="Royality_Percentage" />
+        <span asp-validation-for="Royality_Percentage" class="text-danger"></span>
+    </div>
+    <input type="hidden" value="@Model.BookId" asp-for="BookId">
+    <div class="col-5 offset-2">
+        <a class="btn-primary btn form-control" asp-controller="Book" asp-action="Index">Back to
+            List</a>
+    </div>
+    <div class="col-5">
+        <input type="submit" value="Add" class="btn btn-success form-control" />
+    </div>
+</form>
